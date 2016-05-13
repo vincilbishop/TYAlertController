@@ -68,7 +68,7 @@
 @end
 
 #define kAlertViewWidth 328
-#define kContentViewEdge 38
+#define kContentViewEdge 22
 #define kContentViewSpace 38
 
 #define kTextLabelSpace  14
@@ -148,7 +148,7 @@
     _buttonCornerRadius = 4.0;
     _buttonFont = [UIFont fontWithName:@"HelveticaNeue" size:18];;
     _buttonDefaultBgColor = [UIColor colorWithRed:52/255.0 green:152/255.0 blue:219/255.0 alpha:1];
-    _buttonCancleBgColor = [UIColor colorWithRed:127/255.0 green:140/255.0 blue:141/255.0 alpha:1];
+    _buttonCancleBgColor = [UIColor whiteColor];
     _buttonDestructiveBgColor = [UIColor colorWithRed:231/255.0 green:76/255.0 blue:60/255.0 alpha:1];
     
     _textFeildHeight = kTextFeildHeight;
@@ -171,6 +171,36 @@
             return _buttonDefaultBgColor;
         case TYAlertActionStyleCancle:
             return _buttonCancleBgColor;
+        case TYAlertActionStyleDestructive:
+            return _buttonDestructiveBgColor;
+            
+        default:
+            return nil;
+    }
+}
+
+- (UIColor *)buttonTitleColorWithStyle:(TYAlertActionStyle)style
+{
+    switch (style) {
+        case TYAlertActionStyleDefault:
+            return [UIColor whiteColor];
+        case TYAlertActionStyleCancle:
+            return [UIColor colorWithRed:52/255.0 green:152/255.0 blue:219/255.0 alpha:1];;
+        case TYAlertActionStyleDestructive:
+            return [UIColor whiteColor];
+            
+        default:
+            return nil;
+    }
+}
+
+- (UIColor *)buttonBorderColorWithStyle:(TYAlertActionStyle)style
+{
+    switch (style) {
+        case TYAlertActionStyleDefault:
+            return _buttonDefaultBgColor;
+        case TYAlertActionStyleCancle:
+            return [UIColor colorWithRed:52/255.0 green:152/255.0 blue:219/255.0 alpha:1];;
         case TYAlertActionStyleDestructive:
             return _buttonDestructiveBgColor;
             
@@ -239,6 +269,9 @@
     [button setTitle:action.title forState:UIControlStateNormal];
     button.titleLabel.font = _buttonFont;
     button.backgroundColor = [self buttonBgColorWithStyle:action.style];
+    [button setTitleColor:[self buttonTitleColorWithStyle:action.style] forState:UIControlStateNormal];
+    button.layer.borderWidth = 1.0f;
+    button.layer.borderColor = [self buttonBorderColorWithStyle:action.style].CGColor;
     button.enabled = action.enabled;
     button.tag = kButtonTagOffset + _buttons.count;
     button.translatesAutoresizingMaskIntoConstraints = NO;
@@ -342,7 +375,7 @@
     // step
     _stepLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [_textContentView addConstarintWithTopView:_stepLabel toBottomView:_titleLable constarint:8];
-    [_textContentView addConstarintWithLeftView:_stepLabel toRightView:_textContentView constarint:-60];
+    [_textContentView addConstarintWithLeftView:_stepLabel toRightView:_textContentView constarint:-70];
 }
 
 - (void)layoutButtons
