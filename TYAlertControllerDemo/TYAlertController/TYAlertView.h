@@ -63,6 +63,7 @@ typedef NS_ENUM(NSUInteger, TYAlertActionStyle) {
 
 
 + (instancetype)alertViewWithTitle:(NSString *)title message:(NSString *)message;
++ (instancetype)alertViewWithTitle:(NSString *)title message:(NSString *)message  stepText:(NSString*)stepText;
 
 - (void)addAction:(TYAlertAction *)action;
 

@@ -50,6 +50,7 @@
 
 // text content View
 @property (nonatomic, weak) UIView *textContentView;
+@property (nonatomic, weak) UILabel *stepLabel;
 @property (nonatomic, weak) UILabel *titleLable;
 @property (nonatomic, weak) UILabel *messageLabel;
 
@@ -66,11 +67,11 @@
 
 @end
 
-#define kAlertViewWidth 280
-#define kContentViewEdge 15
-#define kContentViewSpace 15
+#define kAlertViewWidth 328
+#define kContentViewEdge 38
+#define kContentViewSpace 38
 
-#define kTextLabelSpace  6
+#define kTextLabelSpace  14
 
 #define kButtonTagOffset 1000
 #define kButtonSpace     6
@@ -100,9 +101,13 @@
     return self;
 }
 
-- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message
+- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message stepText:(NSString*)stepText
 {
     if (self = [super init]) {
+        
+        if (stepText) {
+            _stepLabel.text = stepText;
+        }
         
         _titleLable.text = title;
         _messageLabel.text = message;
@@ -111,9 +116,19 @@
     return self;
 }
 
+- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message
+{
+    return [self initWithTitle:title message:message stepText:nil];
+}
+
 + (instancetype)alertViewWithTitle:(NSString *)title message:(NSString *)message
 {
     return [[self alloc]initWithTitle:title message:message];
+}
+
++ (instancetype)alertViewWithTitle:(NSString *)title message:(NSString *)message  stepText:(NSString*)stepText
+{
+    return [[self alloc]initWithTitle:title message:message stepText:stepText];
 }
 
 #pragma mark - configure
@@ -198,6 +213,14 @@
     messageLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     [_textContentView addSubview:messageLabel];
     _messageLabel = messageLabel;
+    
+    UILabel *stepLabel = [[UILabel alloc]init];
+    stepLabel.textAlignment = NSTextAlignmentLeft;
+    stepLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:15];
+    stepLabel.textColor = [UIColor colorWithRed:2.0f / 255.0f green:122.0f / 255.0f blue:197.0f / 255.0f alpha:1.0f];
+    [_textContentView addSubview:stepLabel];
+    _stepLabel = stepLabel;
+
 }
 
 - (void)didMoveToSuperview
@@ -315,6 +338,11 @@
     _messageLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [_textContentView addConstarintWithTopView:_titleLable toBottomView:_messageLabel constarint:_textLabelSpace];
     [_textContentView addConstarintWithView:_messageLabel topView:nil leftView:_textContentView bottomView:_textContentView rightView:_textContentView edageInset:UIEdgeInsetsZero];
+    
+    // step
+    _stepLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [_textContentView addConstarintWithTopView:_stepLabel toBottomView:_titleLable constarint:8];
+    [_textContentView addConstarintWithLeftView:_stepLabel toRightView:_textContentView constarint:-60];
 }
 
 - (void)layoutButtons
